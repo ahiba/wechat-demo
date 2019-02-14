@@ -7,7 +7,11 @@ Page({
     
   },
   onTap: function () {
-    wx.redirectTo({
+    // wx.redirectTo({
+    //   url: '../posts/post',
+    // })
+    // 路由api
+    wx.switchTab({
       url: '../posts/post',
     })
   },

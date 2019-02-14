@@ -1,36 +1,39 @@
-// pages/posts/post.js
-const { postList } = require('../../data/posts-data.js') 
+// pages/movies/movies.js
+const app = getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    postList: postList
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onPostTap: function (event) {
-    const postId = event.currentTarget.dataset.postid
-    console.log('获取到的postId'+ postId)
-    wx.navigateTo({
-      url: `post-detail/post-detail?id=${postId}`,
-    })
-  },
-  onSwipperTap: function (event) {
-    // target 和 currentTarget
-    // taget指的是当前点击的组件 currentTarget指的是事件捕获的组件
-    const postId = event.target.dataset.postid
-    wx.navigateTo({
-      url: `post-detail/post-detail?id=${postId}`,
-    })
-  },
   onLoad: function (options) {
-    console.log('postList', postList)
+    const inTheatersUrl = app.globalData.doubanBase +
+      "/v2/movie/in_theaters" + "?start=0&count=3";
+    const comingSoonUrl = app.globalData.doubanBase +
+      "/v2/movie/coming_soon" + "?start=0&count=3";
+    const top250Url = app.globalData.doubanBase +
+      "/v2/movie/top250" + "?start=0&count=3";
+    this.getMovieListData(inTheatersUrl)
+    this.getMovieListData(comingSoonUrl)
+    this.getMovieListData(top250Url)
   },
-
+  getMovieListData: function (reqUrl) {
+    wx.request({
+      url: reqUrl,
+      success: function (res) {
+        console.log('接收到的豆瓣数据 res', res)
+      },
+      fail: function (error) {
+        console.log(error)
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
